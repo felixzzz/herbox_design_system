@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Herbox — Graphic Standard Manual & Design System (v5.0)</title>
+  <meta name="description" content="Interactive Brand Telemetry, Graphic Standard Manual, and Component Specs for Herbox F&B Operations." />
+
+  <!-- Preconnect Google Fonts Fallbacks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Optional Link to external tokens if present -->
+  <link rel="stylesheet" href="herbox-tokens.css" onerror="this.remove()">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            herbox: {
+              red: '#ED5855',
+              'red-dark': '#C9403D',
+              green: '#265A32',
+              'green-dark': '#1A3F23',
+              'green-midnight': '#112316',
+              ivory: '#F7F4E2',
+              'ivory-muted': '#EBE7D0',
+              sage: '#9EBF81',
+              'sage-light': '#D6E5C7',
+              charcoal: '#161917',
+              paper: '#FAF9F0'
+            }
+          },
+          fontFamily: {
+            shrimp: ['Shrimp', 'Fredoka', 'system-ui', 'sans-serif'],
+            coves: ['Coves', 'Nunito', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          },
+          boxShadow: {
+            'zen': '0 4px 20px -2px rgba(22, 25, 23, 0.05), 0 2px 6px -1px rgba(22, 25, 23, 0.03)',
+            'zen-hover': '0 12px 32px -4px rgba(22, 25, 23, 0.08), 0 4px 12px -2px rgba(22, 25, 23, 0.04)',
+            'telemetry': '0 0 0 1px rgba(38, 90, 50, 0.1), 0 8px 30px rgba(0, 0, 0, 0.04)',
+            'glow-red': '0 0 24px -4px rgba(237, 88, 85, 0.35)',
+            'glow-green': '0 0 24px -4px rgba(38, 90, 50, 0.35)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Local Font Definitions */
+    @font-face {
+      font-family: 'Shrimp';
+      src: url('assets/fonts/SHRIMP.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Coves';
+      src: url('assets/fonts/Coves Bold.otf') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Coves';
+      src: url('assets/fonts/Coves Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Japandi Tatami Grid Pattern */
+    .bg-tatami {
+      background-color: #F7F4E2;
+      background-image: radial-gradient(rgba(38, 90, 50, 0.08) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+    .dark .bg-tatami {
+      background-color: #112316;
+      background-image: radial-gradient(rgba(158, 191, 129, 0.12) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+
+    /* Subtle Glassmorphism */
+    .glass-panel {
+      background: rgba(247, 244, 226, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(38, 90, 50, 0.12);
+    }
+    .dark .glass-panel {
+      background: rgba(17, 35, 22, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(158, 191, 129, 0.15);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F7F4E2;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #9EBF81;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #265A32;
+    }
+
+    /* Clipboard Toast Animation */
+    @keyframes toastSlide {
+      from { transform: translateY(100%) scale(0.9); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    .toast-animate {
+      animation: toastSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+
+<body class="bg-tatami text-[#161917] dark:text-[#F7F4E2] font-coves antialiased selection:bg-herbox-red selection:text-white transition-colors duration-300">
+
+  <!-- TOP TELEMETRY BAR -->
+  <header class="sticky top-0 z-50 glass-panel border-b transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Brand & Version -->
+      <div class="flex items-center space-x-3">
+        <a href="#hero" class="flex items-center space-x-2 group">
+          <div class="w-8 h-8 rounded-lg bg-herbox-red flex items-center justify-center text-white shadow-glow-red font-shrimp text-lg tracking-wider transition-transform group-hover:scale-105">
+            H
+          </div>
+          <div>
+            <span class="font-shrimp text-xl tracking-tight text-herbox-green dark:text-herbox-sage block leading-none">Herbox</span>
+            <span class="text-[10px] uppercase font-mono tracking-widest text-[#718096] dark:text-[#9EBF81]/70">GSM v5.0 Cockpit</span>
+          </div>
+        </a>
+        <span class="hidden sm:inline-block px-2 py-0.5 rounded-full text-[11px] font-mono font-medium bg-herbox-sage/20 text-herbox-green dark:text-herbox-sage border border-herbox-sage/30">
+          DESIGN SYSTEM
+        </span>
+      </div>
+
+      <!-- Quick Nav Links -->
+      <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium">
+        <a href="#philosophy" class="px-3 py-1.5 rounded-lg hover:bg-herbox-green/5 dark:hover:bg-herbox-sage/10 transition-colors">Philosophy</a>
+        <a href="#colors" class="px-3 py-1.5 rounded-lg hover:bg-herbox-green/5 dark:hover:bg-herbox-sage/10 transition-colors">Color Matrix</a>
+        <a href="#logos" class="px-3 py-1.5 rounded-lg hover:bg-herbox-green/5 dark:hover:bg-herbox-sage/10 transition-colors">Logo Specs</a>
+        <a href="#typography" class="px-3 py-1.5 rounded-lg hover:bg-herbox-green/5 dark:hover:bg-herbox-sage/10 transition-colors">Typography</a>
+        <a href="#packaging" class="px-3 py-1.5 rounded-lg hover:bg-herbox-green/5 dark:hover:bg-herbox-sage/10 transition-colors">Packaging</a>
+        <a href="#downloads" class="px-3 py-1.5 rounded-lg hover:bg-herbox-green/5 dark:hover:bg-herbox-sage/10 transition-colors">Downloads</a>
+      </nav>
+
+      <!-- Utilities: Theme Toggle & Git Link -->
+      <div class="flex items-center space-x-2">
+        <button id="themeToggle" class="p-2 rounded-lg text-herbox-green dark:text-herbox-sage hover:bg-herbox-green/10 dark:hover:bg-herbox-sage/20 transition-all border border-herbox-green/15 dark:border-herbox-sage/20" title="Toggle Theme (Dark / Ivory Zen)">
+          <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+          <i data-lucide="sun" class="w-4 h-4 block dark:hidden"></i>
+        </button>
+        <a href="https://github.com/felixzzz/herbox_design_system" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-mono bg-herbox-green text-white dark:bg-herbox-sage dark:text-herbox-charcoal hover:opacity-90 transition-opacity">
+          <i data-lucide="github" class="w-3.5 h-3.5"></i>
+          <span>Repository</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WRAPPER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-20">
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative pt-8 pb-12 overflow-hidden rounded-3xl p-8 sm:p-12 lg:p-16 glass-panel border border-herbox-green/10 dark:border-herbox-sage/20 shadow-zen">
+      <div class="relative z-10 max-w-3xl">
+        <!-- Telemetry Badge -->
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full text-xs font-mono bg-herbox-red/10 text-herbox-red border border-herbox-red/20 mb-6">
+          <span class="w-2 h-2 rounded-full bg-herbox-red animate-pulse"></span>
+          <span>OFFICIAL GRAPHIC STANDARD MANUAL · REVISED 2026</span>
+        </div>
+
+        <h1 class="font-shrimp text-5xl sm:text-6xl lg:text-7xl text-herbox-green dark:text-herbox-sage tracking-tight leading-none mb-6">
+          Honest Healthy <br/><span class="text-herbox-red">Fast-Casual</span> Telemetry.
+        </h1>
+
+        <p class="text-lg sm:text-xl text-[#4A5568] dark:text-[#D6E5C7] leading-relaxed mb-8 max-w-2xl font-light">
+          Herbox merges Japanese botanical minimalism (Japandi elegance) with high-density F&B telemetry. Every contour, Pantone value, and typographic scale is engineered for packaging, digital ordering kiosks, and executive dashboard cockpits.
+        </p>
+
+        <!-- Quick Action CTAs -->
+        <div class="flex flex-wrap gap-4 items-center font-mono text-xs">
+          <a href="#colors" class="inline-flex items-center space-x-2 px-5 py-3 rounded-xl bg-herbox-green text-white hover:bg-herbox-green-dark transition-all shadow-glow-green">
+            <i data-lucide="palette" class="w-4 h-4"></i>
+            <span>EXPLORE PALETTE</span>
+          </a>
+          <a href="#downloads" class="inline-flex items-center space-x-2 px-5 py-3 rounded-xl border border-herbox-green/20 dark:border-herbox-sage/30 hover:bg-herbox-green/5 dark:hover:bg-herbox-sage/10 transition-all">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>GET TOKENS & LOGOS</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Watermark / Botanical Decorative SVG -->
+      <div class="absolute -right-12 -bottom-16 opacity-10 pointer-events-none select-none">
+        <svg width="460" height="460" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M100 0C100 55.2285 55.2285 100 0 100C55.2285 100 100 144.772 100 200C100 144.772 144.772 100 200 100C144.772 100 100 55.2285 100 0Z" fill="currentColor" class="text-herbox-green dark:text-herbox-sage"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- SECTION 1: BRAND PHILOSOPHY & DNA -->
+    <section id="philosophy" class="space-y-6">
+      <div class="flex items-center justify-between border-b border-herbox-green/10 dark:border-herbox-sage/20 pb-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-herbox-red font-semibold">Section 01</span>
+          <h2 class="font-shrimp text-3xl sm:text-4xl text-herbox-green dark:text-herbox-sage">Brand DNA & Tenets</h2>
+        </div>
+        <span class="text-xs font-mono text-[#718096]">GSM Page 01–04</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="glass-panel p-6 rounded-2xl border border-herbox-green/10 dark:border-herbox-sage/20 hover:shadow-zen-hover transition-all">
+          <div class="w-10 h-10 rounded-xl bg-herbox-green/10 dark:bg-herbox-sage/10 text-herbox-green dark:text-herbox-sage flex items-center justify-center mb-4">
+            <i data-lucide="sprout" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-shrimp text-xl text-herbox-green dark:text-herbox-sage mb-2">Organic Integrity</h3>
+          <p class="text-sm text-[#4A5568] dark:text-[#D6E5C7] leading-relaxed">
+            Zero synthetic compromises. All salads, warm bowls, and cold-pressed infusions adhere strictly to farm-to-counter freshness, visualized through Earth-grounded tones.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-panel p-6 rounded-2xl border border-herbox-green/10 dark:border-herbox-sage/20 hover:shadow-zen-hover transition-all">
+          <div class="w-10 h-10 rounded-xl bg-herbox-red/10 text-herbox-red flex items-center justify-center mb-4">
+            <i data-lucide="flame" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-shrimp text-xl text-herbox-red mb-2">Vibrant Vitality</h3>
+          <p class="text-sm text-[#4A5568] dark:text-[#D6E5C7] leading-relaxed">
+            The Coral Red accent denotes the warmth of natural spices, culinary passion, and dynamic fast-casual service pace without inducing visual fatigue.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-panel p-6 rounded-2xl border border-herbox-green/10 dark:border-herbox-sage/20 hover:shadow-zen-hover transition-all">
+          <div class="w-10 h-10 rounded-xl bg-herbox-sage/20 text-herbox-green dark:text-herbox-sage flex items-center justify-center mb-4">
+            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-shrimp text-xl text-herbox-green dark:text-herbox-sage mb-2">Japandi Clarity</h3>
+          <p class="text-sm text-[#4A5568] dark:text-[#D6E5C7] leading-relaxed">
+            Uncluttered data surfaces, tactical breathing room, high-contrast readability in both dimly lit restaurant spaces and sunlit drive-thru windows.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: INTERACTIVE COLOR PALETTE & TOKENS -->
+    <section id="colors" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-herbox-green/10 dark:border-herbox-sage/20 pb-4 gap-2">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-herbox-red font-semibold">Section 02</span>
+          <h2 class="font-shrimp text-3xl sm:text-4xl text-herbox-green dark:text-herbox-sage">Telemetry Color Matrix</h2>
+        </div>
+        <p class="text-xs font-mono text-[#718096]">Click any hex value to copy to clipboard</p>
+      </div>
+
+      <!-- Palette Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Color 1: Coral Red -->
+        <div class="group glass-panel rounded-2xl overflow-hidden border border-herbox-green/10 dark:border-herbox-sage/20 hover:shadow-zen-hover transition-all">
+          <div class="h-36 bg-[#ED5855] p-4 flex flex-col justify-between text-white relative transition-transform duration-300 group-hover:scale-[1.02]">
+            <span class="text-xs font-mono uppercase tracking-wider opacity-90">Accent Primary</span>
+            <div class="flex justify-between items-end">
+              <span class="font-shrimp text-2xl tracking-wide">Coral Red</span>
+              <span class="text-xs font-mono bg-black/20 px-2 py-0.5 rounded backdrop-blur-sm">Pantone 1788 C</span>
+            </div>
+          </div>
+          <div class="p-5 space-y-3 font-mono text-xs">
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800">
+              <span class="text-[#718096]">HEX</span>
+              <button onclick="copyToClipboard('#ED5855', 'Herbox Coral Red')" class="font-bold text-herbox-red hover:underline flex items-center space-x-1">
+                <span>#ED5855</span>
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800 text-[#4A5568] dark:text-[#A0AEC0]">
+              <span>RGB</span>
+              <span>237, 88, 85</span>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800 text-[#4A5568] dark:text-[#A0AEC0]">
+              <span>CMYK</span>
+              <span>0, 78, 62, 0</span>
+            </div>
+            <div class="flex justify-between items-center pt-1 text-[11px] text-[#718096]">
+              <span>WCAG (on Ivory)</span>
+              <span class="text-green-600 dark:text-green-400 font-semibold">Pass (AAA Large)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color 2: Forest Green -->
+        <div class="group glass-panel rounded-2xl overflow-hidden border border-herbox-green/10 dark:border-herbox-sage/20 hover:shadow-zen-hover transition-all">
+          <div class="h-36 bg-[#265A32] p-4 flex flex-col justify-between text-white relative transition-transform duration-300 group-hover:scale-[1.02]">
+            <span class="text-xs font-mono uppercase tracking-wider opacity-90">Botanical Anchor</span>
+            <div class="flex justify-between items-end">
+              <span class="font-shrimp text-2xl tracking-wide">Forest Green</span>
+              <span class="text-xs font-mono bg-black/20 px-2 py-0.5 rounded backdrop-blur-sm">Pantone 3435 C</span>
+            </div>
+          </div>
+          <div class="p-5 space-y-3 font-mono text-xs">
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800">
+              <span class="text-[#718096]">HEX</span>
+              <button onclick="copyToClipboard('#265A32', 'Herbox Forest Green')" class="font-bold text-herbox-green dark:text-herbox-sage hover:underline flex items-center space-x-1">
+                <span>#265A32</span>
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800 text-[#4A5568] dark:text-[#A0AEC0]">
+              <span>RGB</span>
+              <span>38, 90, 50</span>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800 text-[#4A5568] dark:text-[#A0AEC0]">
+              <span>CMYK</span>
+              <span>82, 34, 88, 38</span>
+            </div>
+            <div class="flex justify-between items-center pt-1 text-[11px] text-[#718096]">
+              <span>WCAG (on Ivory)</span>
+              <span class="text-green-600 dark:text-green-400 font-semibold">Pass (AAA 8.4:1)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color 3: Ivory Base -->
+        <div class="group glass-panel rounded-2xl overflow-hidden border border-herbox-green/10 dark:border-herbox-sage/20 hover:shadow-zen-hover transition-all">
+          <div class="h-36 bg-[#F7F4E2] p-4 flex flex-col justify-between text-[#161917] relative transition-transform duration-300 group-hover:scale-[1.02] border-b border-gray-300">
+            <span class="text-xs font-mono uppercase tracking-wider opacity-70">Background Base</span>
+            <div class="flex justify-between items-end">
+              <span class="font-shrimp text-2xl tracking-wide">Ivory Base</span>
+              <span class="text-xs font-mono bg-black/10 px-2 py-0.5 rounded">Pantone 7527 C</span>
+            </div>
+          </div>
+          <div class="p-5 space-y-3 font-mono text-xs">
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800">
+              <span class="text-[#718096]">HEX</span>
+              <button onclick="copyToClipboard('#F7F4E2', 'Herbox Ivory Base')" class="font-bold text-gray-800 dark:text-gray-200 hover:underline flex items-center space-x-1">
+                <span>#F7F4E2</span>
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800 text-[#4A5568] dark:text-[#A0AEC0]">
+              <span>RGB</span>
+              <span>247, 244, 226</span>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800 text-[#4A5568] dark:text-[#A0AEC0]">
+              <span>CMYK</span>
+              <span>2, 2, 10, 0</span>
+            </div>
+            <div class="flex justify-between items-center pt-1 text-[11px] text-[#718096]">
+              <span>Role</span>
+              <span class="text-herbox-green dark:text-herbox-sage font-medium">Warm Canvas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Color 4: Leaf Sage -->
+        <div class="group glass-panel rounded-2xl overflow-hidden border border-herbox-green/10 dark:border-herbox-sage/20 hover:shadow-zen-hover transition-all">
+          <div class="h-36 bg-[#9EBF81] p-4 flex flex-col justify-between text-[#161917] relative transition-transform duration-300 group-hover:scale-[1.02]">
+            <span class="text-xs font-mono uppercase tracking-wider opacity-70">Secondary Accent</span>
+            <div class="flex justify-between items-end">
+              <span class="font-shrimp text-2xl tracking-wide">Leaf Sage</span>
+              <span class="text-xs font-mono bg-black/10 px-2 py-0.5 rounded">Pantone 578 C</span>
+            </div>
+          </div>
+          <div class="p-5 space-y-3 font-mono text-xs">
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800">
+              <span class="text-[#718096]">HEX</span>
+              <button onclick="copyToClipboard('#9EBF81', 'Herbox Leaf Sage')" class="font-bold text-herbox-green dark:text-herbox-sage hover:underline flex items-center space-x-1">
+                <span>#9EBF81</span>
+                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800 text-[#4A5568] dark:text-[#A0AEC0]">
+              <span>RGB</span>
+              <span>158, 191, 129</span>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-gray-200 dark:border-gray-800 text-[#4A5568] dark:text-[#A0AEC0]">
+              <span>CMYK</span>
+              <span>42, 5, 60, 0</span>
+            </div>
+            <div class="flex justify-between items-center pt-1 text-[11px] text-[#718096]">
+              <span>Role</span>
+              <span class="text-herbox-green dark:text-herbox-sage font-medium">Badges & Highlights</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3: LOGO SUITE, CLEARSPACE & DON'TS -->
+    <section id="logos" class="space-y-6">
+      <div class="flex items-center justify-between border-b border-herbox-green/10 dark:border-herbox-sage/20 pb-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-herbox-red font-semibold">Section 03</span>
+          <h2 class="font-shrimp text-3xl sm:text-4xl text-herbox-green dark:text-herbox-sage">Official Logotype Architecture</h2>
+        </div>
+        <span class="text-xs font-mono text-[#718096]">Safety X-Height & Variants</span>
+      </div>
+
+      <!-- Live Logo Canvas Tester -->
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-herbox-green/10 dark:border-herbox-sage/20 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 class="font-shrimp text-2xl text-herbox-green dark:text-herbox-sage">Interactive Logo Canvas</h3>
+            <p class="text-xs text-[#718096]">Test logo legibility against different corporate backgrounds</p>
+          </div>
+
+          <!-- Background Selector Pills -->
+          <div class="flex items-center space-x-2 font-mono text-xs">
+            <span class="text-[#718096] mr-1">Canvas:</span>
+            <button onclick="setLogoBg('bg-[#F7F4E2]', 'Herbox Logo-red.png')" class="px-3 py-1 rounded-lg bg-[#F7F4E2] text-black border border-gray-300 font-medium hover:scale-105 transition-transform">Ivory</button>
+            <button onclick="setLogoBg('bg-[#265A32]', 'Herbox Logo-offwhite.png')" class="px-3 py-1 rounded-lg bg-[#265A32] text-white font-medium hover:scale-105 transition-transform">Green</button>
+            <button onclick="setLogoBg('bg-[#112316]', 'Herbox Logo-offwhite.png')" class="px-3 py-1 rounded-lg bg-[#112316] text-[#9EBF81] border border-gray-700 font-medium hover:scale-105 transition-transform">Dark</button>
+            <button onclick="setLogoBg('bg-white', 'Herbox Logo-black.png')" class="px-3 py-1 rounded-lg bg-white text-black border border-gray-300 font-medium hover:scale-105 transition-transform">Pure White</button>
+          </div>
+        </div>
+
+        <!-- The Display Box with Clearspace Grid -->
+        <div id="logoCanvasBox" class="relative w-full h-64 sm:h-80 rounded-2xl bg-[#F7F4E2] border border-herbox-green/20 flex items-center justify-center transition-colors duration-300 overflow-hidden shadow-inner">
+          <!-- Clearspace Overlay Grid -->
+          <div class="absolute inset-8 border border-dashed border-herbox-red/40 rounded-xl pointer-events-none flex items-center justify-between p-2">
+            <span class="text-[10px] font-mono text-herbox-red/60 bg-white/70 dark:bg-black/50 px-1 rounded">1X Clearspace</span>
+            <span class="text-[10px] font-mono text-herbox-red/60 bg-white/70 dark:bg-black/50 px-1 rounded">1X Clearspace</span>
+          </div>
+
+          <!-- Logo Image (Fallback to high-res SVG mockup if asset PNG is loading) -->
+          <div class="text-center z-10 p-4">
+            <img id="activeLogoImg" src="assets/logos/png/Herbox Logo-red.png" onerror="this.onerror=null; this.src='https://dummyimage.com/320x100/ed5855/ffffff&text=Herbox+Logo';" alt="Herbox Official Logo" class="max-h-24 sm:max-h-32 object-contain mx-auto filter drop-shadow-sm transition-all" />
+            <p id="activeLogoLabel" class="mt-4 font-mono text-[11px] text-[#718096]">Variant: Herbox Logo-red.png on Ivory</p>
+          </div>
+        </div>
+
+        <!-- Minimum Sizes & Clearspace Rule Spec -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 font-mono text-xs">
+          <div class="p-4 rounded-xl bg-herbox-green/5 dark:bg-herbox-sage/5 border border-herbox-green/10">
+            <div class="text-herbox-red font-bold mb-1">01. Clearspace Unit 'X'</div>
+            <p class="text-[#4A5568] dark:text-[#A0AEC0]">Equal to the height of the capital letter 'H'. No type, borders, or iconography may penetrate this perimeter.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-herbox-green/5 dark:bg-herbox-sage/5 border border-herbox-green/10">
+            <div class="text-herbox-green dark:text-herbox-sage font-bold mb-1">02. Print Minimum</div>
+            <p class="text-[#4A5568] dark:text-[#A0AEC0]">Minimum width for physical offset or kraft print is <strong>24 mm (0.95 in)</strong> to preserve bowl curves.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-herbox-green/5 dark:bg-herbox-sage/5 border border-herbox-green/10">
+            <div class="text-herbox-green dark:text-herbox-sage font-bold mb-1">03. Digital Minimum</div>
+            <p class="text-[#4A5568] dark:text-[#A0AEC0]">Minimum width for display / mobile screens is <strong>88 pixels</strong> at 72 PPI (retina scaled 176px).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOGO DON'TS (The Violation Gallery) -->
+      <div class="space-y-4 pt-4">
+        <h3 class="font-shrimp text-2xl text-herbox-red flex items-center space-x-2">
+          <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+          <span>Strict Logo Violations (Don'ts)</span>
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Don't 1: Distortion -->
+          <div class="glass-panel p-5 rounded-2xl border border-red-200 dark:border-red-950/40 relative overflow-hidden group">
+            <div class="h-28 bg-white dark:bg-gray-900 rounded-xl flex items-center justify-center border border-dashed border-red-300 mb-3">
+              <span class="font-shrimp text-3xl text-herbox-red transform scale-x-150 tracking-tighter opacity-80">Herbox</span>
+            </div>
+            <div class="flex items-start space-x-2">
+              <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
+              <div>
+                <p class="font-semibold text-xs text-red-600 dark:text-red-400">Do Not Distort / Stretch</p>
+                <p class="text-[11px] text-[#718096]">Always scale proportionally with locked aspect ratio.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Don't 2: Shadow -->
+          <div class="glass-panel p-5 rounded-2xl border border-red-200 dark:border-red-950/40 relative overflow-hidden group">
+            <div class="h-28 bg-white dark:bg-gray-900 rounded-xl flex items-center justify-center border border-dashed border-red-300 mb-3">
+              <span class="font-shrimp text-3xl text-herbox-green filter drop-shadow-[0_10px_8px_rgba(0,0,0,0.6)] opacity-80">Herbox</span>
+            </div>
+            <div class="flex items-start space-x-2">
+              <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
+              <div>
+                <p class="font-semibold text-xs text-red-600 dark:text-red-400">No Drop Shadows or Bevels</p>
+                <p class="text-[11px] text-[#718096]">Herbox is flat, crisp, and tactile. Never apply 3D skeuomorphism.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Don't 3: Low Contrast -->
+          <div class="glass-panel p-5 rounded-2xl border border-red-200 dark:border-red-950/40 relative overflow-hidden group">
+            <div class="h-28 bg-[#9EBF81] rounded-xl flex items-center justify-center border border-dashed border-red-300 mb-3">
+              <span class="font-shrimp text-3xl text-[#265A32] opacity-40">Herbox</span>
+            </div>
+            <div class="flex items-start space-x-2">
+              <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
+              <div>
+                <p class="font-semibold text-xs text-red-600 dark:text-red-400">No Low Contrast Combinations</p>
+                <p class="text-[11px] text-[#718096]">Avoid dark green on sage or red on low-contrast backgrounds.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Don't 4: Rotation -->
+          <div class="glass-panel p-5 rounded-2xl border border-red-200 dark:border-red-950/40 relative overflow-hidden group">
+            <div class="h-28 bg-white dark:bg-gray-900 rounded-xl flex items-center justify-center border border-dashed border-red-300 mb-3">
+              <span class="font-shrimp text-3xl text-herbox-red transform -rotate-12 opacity-80">Herbox</span>
+            </div>
+            <div class="flex items-start space-x-2">
+              <i data-lucide="x-circle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
+              <div>
+                <p class="font-semibold text-xs text-red-600 dark:text-red-400">Do Not Rotate or Slant</p>
+                <p class="text-[11px] text-[#718096]">The logotype must strictly remain on horizontal baseline.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: TYPOGRAPHY LABORATORY -->
+    <section id="typography" class="space-y-6">
+      <div class="flex items-center justify-between border-b border-herbox-green/10 dark:border-herbox-sage/20 pb-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-herbox-red font-semibold">Section 04</span>
+          <h2 class="font-shrimp text-3xl sm:text-4xl text-herbox-green dark:text-herbox-sage">Typography Hierarchy Lab</h2>
+        </div>
+        <span class="text-xs font-mono text-[#718096]">Shrimp & Coves System</span>
+      </div>
+
+      <!-- Specimen Controls & Live Interactive Playground -->
+      <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-herbox-green/10 dark:border-herbox-sage/20 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+          <div>
+            <h3 class="font-shrimp text-2xl text-herbox-green dark:text-herbox-sage mb-2">Live Type Specimen</h3>
+            <p class="text-sm text-[#4A5568] dark:text-[#A0AEC0]">
+              Adjust font family and scale dynamically. Type your own culinary menu title or marketing tagline below.
+            </p>
+          </div>
+
+          <!-- Controls -->
+          <div class="flex flex-wrap gap-4 items-center justify-end font-mono text-xs">
+            <div class="flex items-center space-x-2">
+              <label for="fontSelect" class="text-[#718096]">Font:</label>
+              <select id="fontSelect" onchange="updateTypeLab()" class="px-3 py-1.5 rounded-lg glass-panel border border-herbox-green/20 dark:border-herbox-sage/30 bg-transparent text-herbox-green dark:text-herbox-sage">
+                <option value="font-shrimp" class="dark:bg-gray-900">Shrimp (Brand Display / Fredoka Fallback)</option>
+                <option value="font-coves font-bold" class="dark:bg-gray-900">Coves Bold (Headers / Nunito Fallback)</option>
+                <option value="font-coves font-light" class="dark:bg-gray-900">Coves Light (Editorial Body)</option>
+              </select>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              <label for="sizeSlider" class="text-[#718096]">Size: <span id="sizeValue">48px</span></label>
+              <input id="sizeSlider" type="range" min="16" max="96" value="48" oninput="updateTypeLab()" class="accent-herbox-red w-28 cursor-pointer" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Editable Specimen Box -->
+        <div class="p-6 rounded-2xl bg-white/60 dark:bg-black/40 border border-herbox-green/15 dark:border-herbox-sage/20">
+          <textarea id="liveTextarea" rows="2" class="w-full bg-transparent border-0 focus:ring-0 p-0 text-herbox-green dark:text-herbox-sage resize-none leading-tight font-shrimp" style="font-size: 48px;">Nourish Mindfully. Daily Greens & Grains.</textarea>
+          <div class="mt-3 pt-3 border-t border-gray-200 dark:border-gray-800 flex justify-between text-[11px] font-mono text-[#718096]">
+            <span>Active: <span id="activeFontLabel">Shrimp Regular · Display</span></span>
+            <span>Kern: Optical · Track: -0.02em</span>
+          </div>
+        </div>
+
+        <!-- Typographic Scale Matrix Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left font-mono text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-herbox-green/20 text-[#718096]">
+                <th class="py-2.5">Level</th>
+                <th class="py-2.5">Typeface</th>
+                <th class="py-2.5">Size / Leading</th>
+                <th class="py-2.5">Weight</th>
+                <th class="py-2.5">Application Context</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 dark:divide-gray-800">
+              <tr>
+                <td class="py-3 font-bold text-herbox-red">Display Hero</td>
+                <td class="py-3 font-shrimp text-sm">Shrimp</td>
+                <td class="py-3">64px / 1.05</td>
+                <td class="py-3">Regular (Display)</td>
+                <td class="py-3 text-[#718096]">Storefront signage, billboard banners, app splash</td>
+              </tr>
+              <tr>
+                <td class="py-3 font-bold text-herbox-green dark:text-herbox-sage">Section H1</td>
+                <td class="py-3 font-shrimp text-sm">Shrimp</td>
+                <td class="py-3">40px / 1.15</td>
+                <td class="py-3">Regular</td>
+                <td class="py-3 text-[#718096]">Menu categories, packaging front title</td>
+              </tr>
+              <tr>
+                <td class="py-3 font-bold">Header H2/H3</td>
+                <td class="py-3 font-coves font-bold text-sm">Coves</td>
+                <td class="py-3">24px / 1.25</td>
+                <td class="py-3">Bold (700)</td>
+                <td class="py-3 text-[#718096]">Product titles, nutrition headers, kiosk tiles</td>
+              </tr>
+              <tr>
+                <td class="py-3 font-bold">Body Primary</td>
+                <td class="py-3 font-coves font-light text-sm">Coves</td>
+                <td class="py-3">16px / 1.50</td>
+                <td class="py-3">Light (300) / Regular</td>
+                <td class="py-3 text-[#718096]">Ingredient lists, nutritional breakdowns, web UI</td>
+              </tr>
+              <tr>
+                <td class="py-3 font-bold">Telemetry / Code</td>
+                <td class="py-3 font-mono text-sm">JetBrains Mono</td>
+                <td class="py-3">12px / 1.40</td>
+                <td class="py-3">Medium (500)</td>
+                <td class="py-3 text-[#718096]">Order numbers, POS timestamps, SKU identifiers</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: SUPERGRAPHICS & PACKAGING VISUALIZER -->
+    <section id="packaging" class="space-y-6">
+      <div class="flex items-center justify-between border-b border-herbox-green/10 dark:border-herbox-sage/20 pb-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-herbox-red font-semibold">Section 05</span>
+          <h2 class="font-shrimp text-3xl sm:text-4xl text-herbox-green dark:text-herbox-sage">Supergraphics & Packaging Telemetry</h2>
+        </div>
+        <span class="text-xs font-mono text-[#718096]">Eco-Kraft & Recycled PET</span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Packaging 1: Salad Bowl Sleeve -->
+        <div class="glass-panel p-6 rounded-3xl border border-herbox-green/10 dark:border-herbox-sage/20 flex flex-col justify-between hover:shadow-zen-hover transition-all">
+          <div>
+            <div class="h-44 rounded-2xl bg-[#E8E4CE] dark:bg-[#1E3022] p-6 flex flex-col justify-between relative overflow-hidden border border-herbox-green/20">
+              <!-- Decorative leaf pattern -->
+              <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full border-4 border-herbox-green/20"></div>
+              <div class="flex justify-between items-start">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-herbox-red text-white uppercase">Salad Sleeve</span>
+                <span class="text-xs font-mono text-herbox-green dark:text-herbox-sage">500ml / 750ml</span>
+              </div>
+              <div>
+                <span class="font-shrimp text-2xl text-herbox-green dark:text-herbox-sage block">Zen Kale & Edamame</span>
+                <span class="text-[11px] font-mono text-[#718096]">Unbleached Bagasse Kraft · Soy Ink</span>
+              </div>
+            </div>
+            <h3 class="font-shrimp text-xl text-herbox-green dark:text-herbox-sage mt-4">Compostable Salad Sleeve</h3>
+            <p class="text-xs text-[#4A5568] dark:text-[#D6E5C7] mt-1 leading-relaxed">
+              Offset 2-color spot printing (#265A32 Forest Green + #ED5855 Coral Red) on 300gsm raw kraft stock.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-800 font-mono text-[11px] flex justify-between text-[#718096]">
+            <span>Spec: Die-Cut SL-01</span>
+            <span class="text-green-600 dark:text-green-400">100% Recyclable</span>
+          </div>
+        </div>
+
+        <!-- Packaging 2: Cold-Pressed Juice Bottle -->
+        <div class="glass-panel p-6 rounded-3xl border border-herbox-green/10 dark:border-herbox-sage/20 flex flex-col justify-between hover:shadow-zen-hover transition-all">
+          <div>
+            <div class="h-44 rounded-2xl bg-[#ED5855]/10 dark:bg-[#ED5855]/20 p-6 flex flex-col justify-between relative overflow-hidden border border-herbox-red/20">
+              <div class="flex justify-between items-start">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-herbox-green text-white uppercase">Cold-Pressed Bottle</span>
+                <span class="text-xs font-mono text-herbox-red">250ml rPET</span>
+              </div>
+              <div class="text-center py-2">
+                <div class="inline-block px-3 py-1 rounded-full border border-herbox-red text-herbox-red font-shrimp text-lg">
+                  Herbox Vital 03
+                </div>
+                <p class="text-[10px] font-mono text-[#718096] mt-1">Carrot · Ginger · Red Apple</p>
+              </div>
+              <span class="text-[10px] font-mono text-[#718096] text-right">Clear BOPP Sticker</span>
+            </div>
+            <h3 class="font-shrimp text-xl text-herbox-green dark:text-herbox-sage mt-4">rPET Drink Label</h3>
+            <p class="text-xs text-[#4A5568] dark:text-[#D6E5C7] mt-1 leading-relaxed">
+              Transparent adhesive label with high opacity white backing. Water-resistant matte lamination for ice bath immersion.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-800 font-mono text-[11px] flex justify-between text-[#718096]">
+            <span>Spec: Label LB-04</span>
+            <span class="text-green-600 dark:text-green-400">FDA Food-Grade</span>
+          </div>
+        </div>
+
+        <!-- Packaging 3: Thermal POS Order Ticket -->
+        <div class="glass-panel p-6 rounded-3xl border border-herbox-green/10 dark:border-herbox-sage/20 flex flex-col justify-between hover:shadow-zen-hover transition-all">
+          <div>
+            <div class="h-44 rounded-2xl bg-[#FAF9F0] dark:bg-black/50 p-4 font-mono text-[11px] flex flex-col justify-between border border-dashed border-gray-400">
+              <div class="flex justify-between border-b pb-1 text-black dark:text-white">
+                <span class="font-bold">HERBOX #042</span>
+                <span>TABLE 06</span>
+              </div>
+              <div class="space-y-1 text-black dark:text-gray-300">
+                <div class="flex justify-between">
+                  <span>1x Soba Warm Bowl</span>
+                  <span>$12.50</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>1x Vital 03 Juice</span>
+                  <span>$5.50</span>
+                </div>
+                <div class="text-[9px] text-[#718096]">+ Extra Herb Dressing</div>
+              </div>
+              <div class="flex justify-between border-t pt-1 font-bold text-black dark:text-white">
+                <span>TOTAL PAID</span>
+                <span>$18.00</span>
+              </div>
+            </div>
+            <h3 class="font-shrimp text-xl text-herbox-green dark:text-herbox-sage mt-4">Thermal POS Telemetry</h3>
+            <p class="text-xs text-[#4A5568] dark:text-[#D6E5C7] mt-1 leading-relaxed">
+              Standardized 80mm thermal receipt layout using monospaced columnar hierarchy for kitchen expediting efficiency.
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-gray-200 dark:border-gray-800 font-mono text-[11px] flex justify-between text-[#718096]">
+            <span>Spec: POS-80MM</span>
+            <span class="text-herbox-red font-semibold">Instant Expedite</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 6: ASSET DOWNLOAD & IMPLEMENTATION CENTER -->
+    <section id="downloads" class="space-y-6">
+      <div class="flex items-center justify-between border-b border-herbox-green/10 dark:border-herbox-sage/20 pb-4">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-herbox-red font-semibold">Section 06</span>
+          <h2 class="font-shrimp text-3xl sm:text-4xl text-herbox-green dark:text-herbox-sage">Asset Hub & Code Tokens</h2>
+        </div>
+        <span class="text-xs font-mono text-[#718096]">Production Ready Deliverables</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Left: Download Cards -->
+        <div class="space-y-4">
+          <h4 class="font-shrimp text-xl text-herbox-green dark:text-herbox-sage">Raw Assets & Typography</h4>
+
+          <!-- Font bundle download -->
+          <div class="glass-panel p-4 rounded-2xl flex items-center justify-between border border-herbox-green/10 hover:border-herbox-green/30 transition-all">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-herbox-green/10 dark:bg-herbox-sage/10 text-herbox-green dark:text-herbox-sage flex items-center justify-center font-bold font-mono">
+                TTF
+              </div>
+              <div>
+                <p class="font-bold text-sm text-herbox-green dark:text-herbox-sage">Shrimp Display Font</p>
+                <p class="text-xs text-[#718096] font-mono">assets/fonts/SHRIMP.ttf</p>
+              </div>
+            </div>
+            <a href="assets/fonts/SHRIMP.ttf" download class="p-2 rounded-lg bg-herbox-green text-white hover:bg-herbox-green-dark transition-all" title="Download Shrimp font">
+              <i data-lucide="download" class="w-4 h-4"></i>
+            </a>
+          </div>
+
+          <!-- Coves bundle download -->
+          <div class="glass-panel p-4 rounded-2xl flex items-center justify-between border border-herbox-green/10 hover:border-herbox-green/30 transition-all">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-herbox-green/10 dark:bg-herbox-sage/10 text-herbox-green dark:text-herbox-sage flex items-center justify-center font-bold font-mono">
+                OTF
+              </div>
+              <div>
+                <p class="font-bold text-sm text-herbox-green dark:text-herbox-sage">Coves Bold & Light</p>
+                <p class="text-xs text-[#718096] font-mono">assets/fonts/Coves Bold.otf & Light</p>
+              </div>
+            </div>
+            <a href="assets/fonts/Coves%20Bold.otf" download class="p-2 rounded-lg bg-herbox-green text-white hover:bg-herbox-green-dark transition-all" title="Download Coves Bold font">
+              <i data-lucide="download" class="w-4 h-4"></i>
+            </a>
+          </div>
+
+          <!-- Official Logos Pack -->
+          <div class="glass-panel p-4 rounded-2xl flex items-center justify-between border border-herbox-green/10 hover:border-herbox-green/30 transition-all">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-xl bg-herbox-red/10 text-herbox-red flex items-center justify-center font-bold font-mono">
+                PNG
+              </div>
+              <div>
+                <p class="font-bold text-sm text-herbox-red">Herbox Master Logos (PNG Suite)</p>
+                <p class="text-xs text-[#718096] font-mono">Red, Off-White, Green, Black variants</p>
+              </div>
+            </div>
+            <a href="assets/logos/png/Herbox%20Logo-red.png" download class="p-2 rounded-lg bg-herbox-red text-white hover:bg-herbox-red-dark transition-all" title="Download Official Logo">
+              <i data-lucide="download" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Design Tokens JSON Embed & Snippet -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <h4 class="font-shrimp text-xl text-herbox-green dark:text-herbox-sage">Design System Tokens (JSON)</h4>
+            <a href="tokens.json" download class="text-xs font-mono text-herbox-red hover:underline flex items-center space-x-1">
+              <span>tokens.json</span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+
+          <div class="relative glass-panel rounded-2xl p-4 border border-herbox-green/10 dark:border-herbox-sage/20">
+            <pre class="font-mono text-xs overflow-x-auto text-[#2D3748] dark:text-[#A0AEC0] p-2 leading-relaxed"><code>{
+  "brand": {
+    "name": "Herbox",
+    "version": "5.0",
+    "palette": {
+      "coralRed": "#ED5855",
+      "forestGreen": "#265A32",
+      "ivoryBase": "#F7F4E2",
+      "leafSage": "#9EBF81"
+    },
+    "typography": {
+      "display": "Shrimp, Fredoka, sans-serif",
+      "body": "Coves, Nunito, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    }
+  }
+}</code></pre>
+            <button onclick="copyToClipboard(document.querySelector('pre code').innerText, 'tokens.json')" class="absolute top-4 right-4 px-3 py-1.5 rounded-lg bg-herbox-green/10 dark:bg-herbox-sage/10 text-herbox-green dark:text-herbox-sage hover:bg-herbox-green hover:text-white dark:hover:bg-herbox-sage dark:hover:text-black font-mono text-xs transition-all flex items-center space-x-1">
+              <i data-lucide="copy" class="w-3 h-3"></i>
+              <span>Copy Tokens</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="mt-20 border-t border-herbox-green/10 dark:border-herbox-sage/20 py-12 glass-panel transition-colors">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center space-x-3">
+        <div class="w-8 h-8 rounded-lg bg-herbox-red flex items-center justify-center text-white font-shrimp text-base">H</div>
+        <div>
+          <span class="font-shrimp text-lg text-herbox-green dark:text-herbox-sage block leading-none">Herbox Culinary Telemetry</span>
+          <span class="text-[11px] font-mono text-[#718096]">Designed with Japanese Minimalist / Japandi Balance</span>
+        </div>
+      </div>
+
+      <div class="text-xs font-mono text-[#718096] text-center sm:text-right">
+        <span>Curated for Herbox F&B Operations & Executive Cockpit</span><br/>
+        <span>Repository: <a href="https://github.com/felixzzz/herbox_design_system.git" class="underline hover:text-herbox-red">felixzzz/herbox_design_system</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="glass-panel px-4 py-3 rounded-xl border border-herbox-green/20 dark:border-herbox-sage/30 shadow-zen flex items-center space-x-3 bg-white/95 dark:bg-[#112316]/95">
+      <div class="w-6 h-6 rounded-full bg-herbox-green text-white flex items-center justify-center shrink-0">
+        <i data-lucide="check" class="w-3.5 h-3.5"></i>
+      </div>
+      <div>
+        <p id="toastTitle" class="text-xs font-bold text-herbox-green dark:text-herbox-sage">Copied to Clipboard</p>
+        <p id="toastMessage" class="text-[11px] font-mono text-[#718096]">HEX value ready to paste</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERACTIVE LOGIC SCRIPT -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Theme Toggle Logic
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const htmlElem = document.documentElement;
+
+    // Check system or saved preference
+    if (localStorage.getItem('herbox-theme') === 'dark' || (!localStorage.getItem('herbox-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      htmlElem.classList.add('dark');
+    } else {
+      htmlElem.classList.remove('dark');
+    }
+
+    themeToggleBtn.addEventListener('click', () => {
+      if (htmlElem.classList.contains('dark')) {
+        htmlElem.classList.remove('dark');
+        localStorage.setItem('herbox-theme', 'light');
+      } else {
+        htmlElem.classList.add('dark');
+        localStorage.setItem('herbox-theme', 'dark');
+      }
+      lucide.createIcons();
+    });
+
+    // Copy to Clipboard with Toast Notification
+    let toastTimeout;
+    function copyToClipboard(text, label = 'Value') {
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+
+        toastTitle.innerText = `Copied: ${label}`;
+        toastMessage.innerText = text;
+
+        toast.classList.remove('translate-y-24', 'opacity-0');
+        toast.classList.add('translate-y-0', 'opacity-100');
+
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          toast.classList.add('translate-y-24', 'opacity-0');
+          toast.classList.remove('translate-y-0', 'opacity-100');
+        }, 2500);
+      }).catch(err => {
+        console.error('Failed to copy', err);
+      });
+    }
+
+    // Logo Background & Asset Switcher
+    function setLogoBg(bgClass, logoFilename) {
+      const box = document.getElementById('logoCanvasBox');
+      const img = document.getElementById('activeLogoImg');
+      const label = document.getElementById('activeLogoLabel');
+
+      // Clear previous bg classes
+      box.className = `relative w-full h-64 sm:h-80 rounded-2xl border border-herbox-green/20 flex items-center justify-center transition-colors duration-300 overflow-hidden shadow-inner ${bgClass}`;
+      
+      img.src = `assets/logos/png/${logoFilename}`;
+      label.innerText = `Variant: ${logoFilename} on ${bgClass.replace('bg-', '')}`;
+    }
+
+    // Typography Lab Live Updater
+    function updateTypeLab() {
+      const select = document.getElementById('fontSelect');
+      const slider = document.getElementById('sizeSlider');
+      const textarea = document.getElementById('liveTextarea');
+      const sizeValue = document.getElementById('sizeValue');
+      const activeLabel = document.getElementById('activeFontLabel');
+
+      const size = slider.value;
+      sizeValue.innerText = `${size}px`;
+      textarea.style.fontSize = `${size}px`;
+
+      // Update font classes
+      textarea.className = `w-full bg-transparent border-0 focus:ring-0 p-0 text-herbox-green dark:text-herbox-sage resize-none leading-tight ${select.value}`;
+      activeLabel.innerText = select.options[select.selectedIndex].text;
+    }
+  </script>
+
+</body>
+</html>
