@@ -1,0 +1,154 @@
+/**
+ * Herbox Design Tokens & Theme CSS
+ * Ready for web, HTML slides, and responsive components.
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Outfit:wght@600;800&display=swap');
+
+:root {
+  /* Brand Primitive Colors */
+  --hb-color-coral-red: #ED5855;
+  --hb-color-forest-green: #265A32;
+  --hb-color-ivory-base: #F7F4E2;
+  --hb-color-leaf-sage: #9EBF81;
+  --hb-color-terracotta: #E17A65;
+
+  /* Neutral Surface & Text */
+  --hb-color-white: #FFFFFF;
+  --hb-color-charcoal: #1C1C1C;
+  --hb-color-border-subtle: #ECE8D7;
+
+  /* Semantic Aliases */
+  --hb-bg-canvas: var(--hb-color-ivory-base);
+  --hb-bg-surface: var(--hb-color-white);
+  --hb-text-primary: var(--hb-color-forest-green);
+  --hb-text-body: var(--hb-color-charcoal);
+  --hb-text-on-dark: var(--hb-color-ivory-base);
+  --hb-action-primary: var(--hb-color-coral-red);
+  --hb-action-primary-hover: #D94946;
+
+  /* Typography Stacks */
+  --hb-font-display: 'Shrimp', 'Fredoka', 'Outfit', system-ui, -apple-system, sans-serif;
+  --hb-font-body: 'Coves', 'Nunito', system-ui, -apple-system, sans-serif;
+
+  /* Border Radii */
+  --hb-radius-sm: 6px;
+  --hb-radius-md: 12px;
+  --hb-radius-lg: 20px;
+  --hb-radius-xl: 32px;
+  --hb-radius-full: 9999px;
+
+  /* Elevations */
+  --hb-shadow-subtle: 0px 2px 8px rgba(38, 90, 50, 0.06);
+  --hb-shadow-raised: 0px 8px 20px rgba(38, 90, 50, 0.10);
+  --hb-shadow-floating: 0px 16px 36px rgba(28, 28, 28, 0.14);
+}
+
+/* Base Styles */
+body {
+  background-color: var(--hb-bg-canvas);
+  color: var(--hb-text-body);
+  font-family: var(--hb-font-body);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .hb-title {
+  font-family: var(--hb-font-display);
+  color: var(--hb-text-primary);
+  margin-top: 0;
+  font-weight: 700;
+}
+
+/* Herbox Component Classes */
+.hb-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--hb-action-primary);
+  color: #FFFFFF;
+  font-family: var(--hb-font-display);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: var(--hb-radius-full);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(237, 88, 85, 0.25);
+  transition: all 0.2s ease-in-out;
+}
+
+.hb-btn-primary:hover {
+  background-color: var(--hb-action-primary-hover);
+  transform: translateY(-1px);
+}
+
+.hb-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: var(--hb-color-forest-green);
+  font-family: var(--hb-font-display);
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 22px;
+  border-radius: var(--hb-radius-full);
+  border: 2px solid var(--hb-color-forest-green);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.hb-btn-secondary:hover {
+  background-color: rgba(38, 90, 50, 0.08);
+}
+
+.hb-bento-card {
+  background: var(--hb-bg-surface);
+  border: 1.5px solid var(--hb-color-border-subtle);
+  border-radius: var(--hb-radius-lg);
+  padding: 24px;
+  box-shadow: var(--hb-shadow-subtle);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hb-bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--hb-shadow-raised);
+}
+
+.hb-badge-vegan {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--hb-color-leaf-sage);
+  color: var(--hb-color-forest-green);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: var(--hb-radius-full);
+}
+
+.hb-badge-bestseller {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--hb-color-coral-red);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: var(--hb-radius-full);
+}
+
+.hb-price-tag {
+  color: var(--hb-color-coral-red);
+  font-family: var(--hb-font-display);
+  font-size: 18px;
+  font-weight: 700;
+}

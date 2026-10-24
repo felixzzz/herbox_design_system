@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Herbox Slide Archetypes & UI Preview</title>
+  <link rel="stylesheet" href="../herbox-tokens.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background-color: #E5E0D0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      font-family: var(--hb-font-body);
+    }
+    .slide-container {
+      width: 1000px;
+      height: 562.5px; /* 16:9 ratio */
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .slide-label {
+      width: 1000px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #4A4A4A;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: -28px;
+    }
+
+    /* Archetype 1: Cover Slide */
+    .slide-cover {
+      background: var(--hb-color-forest-green);
+      color: var(--hb-color-ivory-base);
+      padding: 60px 80px;
+      justify-content: space-between;
+    }
+    .slide-cover .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .slide-cover .logo {
+      height: 52px;
+    }
+    .slide-cover .content {
+      max-width: 700px;
+    }
+    .slide-cover h1 {
+      font-size: 54px;
+      line-height: 1.1;
+      color: var(--hb-color-ivory-base);
+      margin-bottom: 16px;
+    }
+    .slide-cover p {
+      font-size: 22px;
+      color: var(--hb-color-leaf-sage);
+      margin: 0;
+    }
+    .slide-cover .footer {
+      font-size: 14px;
+      color: rgba(247, 244, 226, 0.6);
+      border-top: 1px solid rgba(247, 244, 226, 0.15);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Archetype 2: Bento Grid */
+    .slide-bento {
+      background: var(--hb-color-ivory-base);
+      padding: 50px 70px;
+    }
+    .slide-bento .title-bar {
+      margin-bottom: 30px;
+    }
+    .slide-bento h2 {
+      font-size: 34px;
+      margin: 0 0 6px 0;
+      color: var(--hb-color-forest-green);
+    }
+    .slide-bento p.sub {
+      margin: 0;
+      font-size: 15px;
+      color: var(--hb-color-charcoal);
+      opacity: 0.8;
+    }
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      flex: 1;
+    }
+    .bento-item {
+      background: #FFFFFF;
+      border-radius: var(--hb-radius-lg);
+      padding: 24px;
+      border: 1.5px solid var(--hb-color-border-subtle);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--hb-shadow-subtle);
+    }
+    .bento-item h3 {
+      font-size: 20px;
+      margin: 8px 0;
+      color: var(--hb-color-forest-green);
+    }
+    .bento-item p {
+      font-size: 13px;
+      color: #555555;
+      line-height: 1.4;
+      margin: 0 0 16px 0;
+    }
+    .bento-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px dashed var(--hb-color-border-subtle);
+    }
+
+    /* Archetype 3: Metrics / Traction */
+    .slide-metrics {
+      background: var(--hb-color-ivory-base);
+      padding: 60px 80px;
+      justify-content: space-between;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin: auto 0;
+    }
+    .metric-card {
+      background: #FFFFFF;
+      padding: 36px 28px;
+      border-radius: 20px;
+      text-align: center;
+      border: 1.5px solid var(--hb-color-border-subtle);
+    }
+    .metric-number {
+      font-family: var(--hb-font-display);
+      font-size: 56px;
+      color: var(--hb-color-coral-red);
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .metric-label {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--hb-color-forest-green);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slide-label">
+    <span>ARCHETYPE 1: COVER SLIDE (IMPACT & HERO)</span>
+    <span>16:9 Widescreen (1920×1080)</span>
+  </div>
+  <div class="slide-container slide-cover">
+    <div class="header">
+      <img src="../assets/logos/png/Herbox Logo-offwhite.png" alt="Herbox Logo" class="logo">
+      <span class="hb-badge-vegan">Herbivore's Box · 2026</span>
+    </div>
+    <div class="content">
+      <h1>Think Outside The Box with Herbox.</h1>
+      <p>Delightful, approachable, and plant-based everyday food for everyone.</p>
+    </div>
+    <div class="footer">
+      <span>Company Presentation & Catering Strategy</span>
+      <span>Confidential · Felix Salim Ecosystem</span>
+    </div>
+  </div>
+
+  <div class="slide-label">
+    <span>ARCHETYPE 2: BENTO GRID (PRODUCT SHOWCASE)</span>
+    <span>16:9 Widescreen (1920×1080)</span>
+  </div>
+  <div class="slide-container slide-bento">
+    <div class="title-bar">
+      <h2>Pilihan Menu Katering Favorit</h2>
+      <p class="sub">Setiap box dipersiapkan segar dengan gizi seimbang dan kemasan ramah lingkungan.</p>
+    </div>
+    <div class="bento-grid">
+      <div class="bento-item">
+        <div>
+          <span class="hb-badge-bestseller">Best Seller</span>
+          <h3>Nasi Pesmol Vegan</h3>
+          <p>Nasi kuning rempah disajikan dengan olahan nabati bumbu pesmol khas Sunda, acar kuning, dan tempe orek garing.</p>
+        </div>
+        <div class="bento-footer">
+          <span class="hb-price-tag">Rp38.000</span>
+          <span style="font-size: 12px; color: #888;">420 kkal</span>
+        </div>
+      </div>
+      <div class="bento-item">
+        <div>
+          <span class="hb-badge-vegan">100% Plant-Based</span>
+          <h3>Rica-Rica Herbivore</h3>
+          <p>Potongan jamur tiram dan protein kedelai berbalut sambal rica pedas segar daun kemangi dengan nasi merah pandan.</p>
+        </div>
+        <div class="bento-footer">
+          <span class="hb-price-tag">Rp35.000</span>
+          <span style="font-size: 12px; color: #888;">390 kkal</span>
+        </div>
+      </div>
+      <div class="bento-item">
+        <div>
+          <span class="hb-badge-vegan">High Protein</span>
+          <h3>Bento Katsu Kari</h3>
+          <p>Crispy plant-based katsu dengan saus kari Jepang aromatik, wortel, kentang rebus lembut, dan edamame.</p>
+        </div>
+        <div class="bento-footer">
+          <span class="hb-price-tag">Rp42.000</span>
+          <span style="font-size: 12px; color: #888;">480 kkal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-label">
+    <span>ARCHETYPE 3: TRACTION & KEY METRICS</span>
+    <span>16:9 Widescreen (1920×1080)</span>
+  </div>
+  <div class="slide-container slide-metrics">
+    <div>
+      <h2 style="font-size: 34px; margin: 0 0 8px 0; color: var(--hb-color-forest-green);">Dampak & Performa Katering</h2>
+      <p style="margin: 0; font-size: 15px; color: #555;">Kemitraan korporat dan katering harian sepanjang semester ini.</p>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-number">15.000+</div>
+        <div class="metric-label">Box Terdistribusi</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-number">98.4%</div>
+        <div class="metric-label">Kepuasan Karyawan</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-number">&lt; Rp40rb</div>
+        <div class="metric-label">Rata-rata Harga / Porsi</div>
+      </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--hb-color-border-subtle); padding-top: 16px;">
+      <span style="font-size: 13px; color: #666;">Data operasional katering Herbox x BlueSky</span>
+      <button class="hb-btn-primary" style="padding: 8px 20px; font-size: 13px;">Unduh Laporan Lengkap</button>
+    </div>
+  </div>
+
+</body>
+</html>
